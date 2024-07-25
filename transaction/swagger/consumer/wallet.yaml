@@ -1,0 +1,193 @@
+openapi: 3.0.1
+info:
+  title: WALLET
+  description: Wallet manager
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /v1/wallet:
+    post:
+      tags:
+        - Wallet
+      summary: Create new wallet
+      description: Create new wallet
+      operationId: createWallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWalletRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWalletResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - Wallet
+      summary: Get wallets
+      description: Get wallets
+      operationId: getWallets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreateWalletResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /v1/wallet/{accountId}:
+    get:
+      tags:
+        - Wallet
+      summary: Get wallet
+      description: Get wallet
+      operationId: getWallet
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWalletResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /v1/wallet/{accountId}/change-status:
+    put:
+      tags:
+        - Wallet
+      summary: Change wallet status
+      description: Change wallet status
+      operationId: changeWalletStatus
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWalletResponse'
+  /v1/wallet/{accountId}/deposit:
+    post:
+      tags:
+        - Wallet
+      summary: Deposit money
+      description: Deposit money
+      operationId: deposit
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialValue'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWalletResponse'
+  /v1/wallet/{accountId}/withdraw:
+    post:
+      tags:
+        - Wallet
+      summary: Withdraw money
+      description: Withdraw money
+      operationId: withdraw
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialValue'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWalletResponse'
+
+components:
+  schemas:
+    CreateWalletRequest:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        digit:
+          type: integer
+          format: int64
+        owner:
+          type: string
+
+    CreateWalletResponse:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        digit:
+          type: integer
+          format: int64
+        owner:
+          type: string
+        amount:
+          type: number
+          format: double
+        status:
+          type: string
+
+    FinancialValue:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double

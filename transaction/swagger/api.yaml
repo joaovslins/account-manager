@@ -1,0 +1,162 @@
+openapi: 3.0.1
+info:
+  title: TRANSACTION
+  description: Transaction manager
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /v1/transaction:
+    post:
+      tags:
+        - Transaction
+      summary: Add new transaction
+      description: Add a new transaction
+      operationId: addTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        '200':
+          description: Transaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - Transaction
+      summary: List all transactions
+      description: Retrieve all transactions
+      operationId: listTransactions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /v1/transaction/{transactionId}:
+    get:
+      tags:
+        - Transaction
+      summary: Get transaction by ID
+      description: Retrieve a transaction by its ID
+      operationId: getTransactionById
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal server error
+  /v1/transaction/account/{accountId}:
+    get:
+      tags:
+        - Transaction
+      summary: List transactions by account ID
+      description: Retrieve transactions for a specific account ID
+      operationId: listTransactionsByAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: Account not found
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    TransactionRequest:
+      type: object
+      properties:
+        value:
+          type: number
+          format: double
+        operation:
+          type: integer
+          format: int64
+        account:
+          type: integer
+          format: int64
+        establishment:
+          type: string
+        transactionID:
+          type: integer
+          format: int64
+        statusTransaction:
+          type: string
+          enum:
+            - LAN
+            - CAN
+        dateOperation:
+          type: string
+          format: date
+          example: '20230724'
+    TransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          type: integer
+          format: int64
+        value:
+          type: number
+          format: double
+        operation:
+          type: integer
+          format: int64
+        account:
+          type: integer
+          format: int64
+        establishment:
+          type: string
+        transactionID:
+          type: integer
+          format: int64
+        statusTransaction:
+          type: string
+        dateOperation:
+          type: string
+          format: date
+          example: '20230724'
