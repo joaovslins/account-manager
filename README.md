@@ -47,4 +47,7 @@ Para executar o projeto, é necessário ter o Docker instalado em seu ambiente. 
    cd .. 
    docker compose up -d
 
+2. **Arquitetura da Aplicação**
+   ![Screenshot 2024-07-25 165414](https://github.com/user-attachments/assets/10ebca98-9dd4-4115-be2a-dfc7a334abb6)
+
 
